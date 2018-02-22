@@ -1,0 +1,39 @@
+﻿@model List<Todo>
+@{
+    ViewData["Title"] = "List";
+}
+
+<html>
+<body>
+    <br /><br /><br /><br />
+    <table style="width:100%">
+        <tr>
+            <th>What</th>
+            <th>Time</th>
+            <th>Complete</th>
+        </tr>
+        @foreach (Todo todo in Model)
+        {
+            <tr>
+                <td>@todo.What</td>
+                @{if (todo.Time != 0)
+                    {
+                        <td>@todo.Time</td>
+                    }
+                    else
+                    {
+                        <td>Unknown</td>
+                    }
+                }
+                <td><a href="List?what=@todo.What&time=@todo.Time">Complete</a> </td>
+            </tr>
+        }
+    </table>
+    <form method="get" action="add">
+        <input type="text" name="what">----------------------------------
+        <input size:10 type="text" name="time">-------------------
+        <input type="submit" value="Add node">
+    </form>
+
+</body>
+</html>
