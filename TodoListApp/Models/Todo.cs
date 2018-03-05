@@ -7,13 +7,6 @@ namespace TodoListApp.Models
 {
     public class Todo
     {
-        /*public Todo(int personId, string what, DateTime deadLine)
-        {
-            PersonId = personId;
-            What = what;
-            DeadLine = deadLine;
-        }*/
-
         public bool Equals(Todo other)
         {
             return 
