@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TodoListApp.Models;
 
 namespace TodoListApp
@@ -19,13 +17,13 @@ namespace TodoListApp
             if (!context.TodoList.Any())
             {
                 Person tigran = context.People.ToList()[0];
-                Todo buyAccumulator = new Todo
+                Todo dummy = new Todo
                 {
                     PersonId = tigran.PersonId,
-                    What = "Buy an accumulator",
-                    DeadLine = DateTime.Parse("2018/03/04")
+                    What = "Do something good",
+                    DeadLine = DateTime.Now
                 };
-                context.TodoList.Add(buyAccumulator);
+                context.TodoList.Add(dummy);
                 context.SaveChanges();
             }
         }

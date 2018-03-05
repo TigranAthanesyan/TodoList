@@ -1,5 +1,3 @@
-using System;
-
 namespace TodoListApp.Models
 {
     public class ErrorViewModel
@@ -7,5 +5,7 @@ namespace TodoListApp.Models
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string Message { get; set; }
     }
 }

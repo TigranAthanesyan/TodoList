@@ -5,13 +5,16 @@
 
 <html>
 <body>
-    <br /><br /><br /><br />
+    <br /><br />
+    <h3>Todo list for @ViewBag.Name</h3>
+    <br /><br />
     <form method="post" asp-controller="Home" asp-action="Add">
         <input type="hidden" value="@ViewBag.PersonId" name="PersonId" />
     <table>
         <tr>
             <th>What</th>
-            <th>Time</th>
+            <th>Deadline</th>
+            <th></th>
             <th></th>
         </tr>
         @foreach (Todo todo in Model)
@@ -26,20 +29,45 @@
             {
                 <td>Tomorrow</td>
             }
+            else if (todo.DeadLine.AddDays(1) == DateTime.Today)
+            {
+                <td>Yesterday</td>
+            }
+            else if (todo.DeadLine == default(DateTime))
+            {
+                <td>Unknown</td>
+            }
             else
             {
-                <td>@todo.DeadLine.ToString("yyyy/MM/dd")</td>
+                if (todo.DeadLine.Year == DateTime.Now.Year)
+                {
+                    <td>@todo.DeadLine.ToString("MM/dd")</td>
+                }
+                else
+                {
+                    <td>@todo.DeadLine.ToString("yyyy/MM/dd")</td>
+                }
             }
             }
             <td><a asp-controller="Home" asp-action="Complete" asp-route-PersonId=@todo.PersonId asp-route-what=@todo.What
                    asp-route-deadline=@todo.DeadLine>Complete</a> </td>
-            @*<td><a asp-controller="Home" asp-action="Complete" asp-route-todo=@todo>Complete</a> </td>*@
+
+           @{ if (todo.DeadLine.Date < DateTime.Now.Date && todo.DeadLine != default(DateTime))
+            {
+                 <td><b>EXPIRED</b></td>
+            }
+            else
+            {
+                 <td></td>
+            }
+            }
         </tr>
         }
         <tr>
             <td><input type="text" name="What"></td>
             <td><input type="text" name="DeadLine"></td>
             <td><input type="submit" value="Add node"></td>
+            <td></td>
         </tr>
     </table>
         </form>

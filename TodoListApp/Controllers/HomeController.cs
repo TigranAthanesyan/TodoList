@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using TodoListApp.Models;
 
@@ -15,67 +14,117 @@ namespace TodoListApp.Controllers
 
         public IActionResult Index() { return View(); }
 
-        private IActionResult List(int id)
-        {
-            var todoList = db.TodoList.ToList();
-            var retList = new List<Todo>();
-            foreach (var todo in todoList)
-            {
-                if (todo.PersonId == id)
-                {
-                    retList.Add(todo);
-                }
-            }
-            ViewBag.PersonId = id;
-            return View(retList);
-        }
         public IActionResult List(string name)
         {
-            var people = db.People.ToList();
-            int id = 0;
-            foreach (var person in people)
+            var person = db.People.FirstOrDefault(p => p.Name == name);
+            int personId = 0;
+            if (person != null)
             {
-                if (person.Name == name)
-                {
-                    id = person.PersonId;
-                    break;
-                }
+                personId = person.PersonId;
             }
-            return List(id);
+            else
+            {
+                Person newPerson = new Person { Name = name };
+                db.People.Add(newPerson);
+                db.SaveChanges();
+                personId = newPerson.PersonId;
+            }
+
+            var todoList = db.TodoList.Where(t => t.PersonId == personId).ToList();
+            todoList.Sort((t1, t2) =>
+            {
+                if (t1.DeadLine.Date < t2.DeadLine.Date) { return -1; };
+                if (t1.DeadLine.Date > t2.DeadLine.Date) { return  1; };
+                return 0;
+            });
+            ViewBag.PersonId = personId;
+            ViewBag.Name = name;
+            return View(todoList);
         }
 
         public IActionResult Add(Todo todo)
         {
+            var person = db.People.FirstOrDefault(p => p.PersonId == todo.PersonId);
+            if (person == null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Adding new node failed!! Reason: Person with PersonId ");
+                sb.Append(todo.PersonId);
+                sb.Append(" does not exist..");
+                return RedirectToAction(nameof(this.Error), new { message = sb.ToString() });
+            }
+
+            var name = person.Name;
+            if (todo.What == null)
+            {
+                return RedirectToAction(nameof(this.List), new { name = name });
+            }
+
             try
             {
                 db.TodoList.Add(todo);
                 db.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Adding new node \"");
+                sb.Append(todo.What);
+                sb.Append("\" failed!! ");
+                sb.Append("Reason: ");
+                sb.Append(ex.Message);
+                return RedirectToAction(nameof(this.Error), new { message = sb.ToString() });
             }
-            return RedirectToAction(nameof(this.List), new { id = todo.PersonId });
+
+            return RedirectToAction(nameof(this.List), new { name = name });
         }
 
         public IActionResult Complete(Todo todo)
         {
+            var person = db.People.FirstOrDefault(p => p.PersonId == todo.PersonId);
+            if (person == null || todo.What == null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Finishing node failed!! Reason: ");
+                if (person == null)
+                {
+                    sb.Append("Person with PersonId ");
+                    sb.Append(todo.PersonId);
+                    sb.Append(" does not exist..");
+                }
+                else
+                {
+                    sb.Append("Node is empty..");
+                }
+                return RedirectToAction(nameof(this.Error), new { message = sb.ToString() });
+            }
+
             try
             {
-                db.Remove(db.TodoList.Single(t => t.What == todo.What && t.PersonId == todo.PersonId));
+                db.TodoList.Remove(todo);
                 db.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
-                Console.ReadLine();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Finishing node \"");
+                sb.Append(todo.What);
+                sb.Append("\" failed!! ");
+                sb.Append("Reason: ");
+                sb.Append(ex.Message);
+                return RedirectToAction(nameof(this.Error), new { message = sb.ToString() });
             }
-            return RedirectToAction(nameof(this.List), new { id = todo.PersonId });
+            var name = person.Name;
+            return RedirectToAction(nameof(this.List), new { name = name });
         }
 
-        public IActionResult Error()
+        public IActionResult Error(string message = null)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Message = message
+            });
         }
     }
 }
