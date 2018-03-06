@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TodoListApp.Models;
 
 namespace TodoListApp.Controllers
@@ -30,13 +31,8 @@ namespace TodoListApp.Controllers
                 personId = newPerson.PersonId;
             }
 
-            var todoList = db.TodoList.Where(t => t.PersonId == personId).ToList();
-            todoList.Sort((t1, t2) =>
-            {
-                if (t1.DeadLine.Date < t2.DeadLine.Date) { return -1; };
-                if (t1.DeadLine.Date > t2.DeadLine.Date) { return  1; };
-                return 0;
-            });
+            var todoList = db.TodoList.Where(t => t.PersonId == personId).OrderBy(t => t.DeadLine).ToList();
+
             ViewBag.PersonId = personId;
             ViewBag.Name = name;
             return View(todoList);
