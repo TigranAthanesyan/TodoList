@@ -10,20 +10,20 @@ namespace TodoListApp
         {
             if (!context.People.Any())
             {
-                Person tigran = new Person { Name = "Tigran" };
-                context.People.Add(tigran);
+                Person testUser = new Person { UserName = "TestUser", Password = "test" };
+                context.People.Add(testUser);
                 context.SaveChanges();
             }
             if (!context.TodoList.Any())
             {
-                Person tigran = context.People.ToList()[0];
-                Todo dummy = new Todo
+                Person testUser = context.People.FirstOrDefault(p => p.UserName == "TestUser");
+                Todo initialTodo = new Todo
                 {
-                    PersonId = tigran.PersonId,
+                    UserName = testUser.UserName,
                     What = "Do something good",
                     DeadLine = DateTime.Now
                 };
-                context.TodoList.Add(dummy);
+                context.TodoList.Add(initialTodo);
                 context.SaveChanges();
             }
         }

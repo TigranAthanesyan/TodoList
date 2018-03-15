@@ -1,4 +1,4 @@
-﻿@model List<Todo>
+﻿@model KeyValuePair<List<Todo>, List<Todo>>
 @{
     ViewData["Title"] = "List";
 }
@@ -6,70 +6,158 @@
 <html>
 <body>
     <br /><br />
-    <h3>Todo list for @ViewBag.Name</h3>
+    <h3>Todo list for @ViewBag.UserName</h3>
     <br /><br />
-    <form method="post" asp-controller="Home" asp-action="Add">
-        <input type="hidden" value="@ViewBag.PersonId" name="PersonId" />
-    <table>
+    <form method="post" asp-controller="Home" asp-action="Add" id="addForm"></form>
+    <table style="width:100%" , border="1">
         <tr>
-            <th>What</th>
-            <th>Deadline</th>
-            <th></th>
-            <th></th>
+            <th width="30%">What</th>
+            <th width="20%">Deadline</th>
+            <th width="20%"></th>
+            <th width="20%"></th>
+            <th width="10%"></th>
         </tr>
-        @foreach (Todo todo in Model)
+        @foreach (Todo todo in Model.Key)
         {
-        <tr>
-            <td>@todo.What</td>
-           @{if (todo.DeadLine == DateTime.Today)
-            {
-                <td>Today</td>
-            }
-            else if (todo.DeadLine == DateTime.Today.AddDays(1))
-            {
-                <td>Tomorrow</td>
-            }
-            else if (todo.DeadLine.AddDays(1) == DateTime.Today)
-            {
-                <td>Yesterday</td>
-            }
-            else if (todo.DeadLine == default(DateTime))
-            {
-                <td>Unknown</td>
-            }
-            else
-            {
-                if (todo.DeadLine.Year == DateTime.Now.Year)
-                {
-                    <td>@todo.DeadLine.ToString("MM/dd")</td>
+            <tr>
+                <td>@todo.What</td>
+                @{
+                    if (todo.DeadLine == DateTime.Today)
+                    {
+                        <td>Today</td>
+                    }
+                    else if (todo.DeadLine == DateTime.Today.AddDays(1))
+                    {
+                        <td>Tomorrow</td>
+                    }
+                    else if (todo.DeadLine.AddDays(1) == DateTime.Today)
+                    {
+                        <td>Yesterday</td>
+                    }
+                    else if (todo.DeadLine == default(DateTime))
+                    {
+                        <td>Unknown</td>
+                    }
+                    else if (todo.DeadLine.Year == DateTime.Now.Year)
+                    {
+                        <td>@todo.DeadLine.ToString("MM/dd")</td>
+                    }
+                    else
+                    {
+                        <td> @todo.DeadLine.ToString("yyyy/MM/dd") </td>
+                    }
                 }
-                else
-                {
-                    <td>@todo.DeadLine.ToString("yyyy/MM/dd")</td>
-                }
-            }
-            }
-            <td><a asp-controller="Home" asp-action="Complete" asp-route-PersonId=@todo.PersonId asp-route-what=@todo.What
-                   asp-route-deadline=@todo.DeadLine>Complete</a> </td>
-
-           @{ if (todo.DeadLine.Date < DateTime.Now.Date && todo.DeadLine != default(DateTime))
-            {
-                 <td><b>EXPIRED</b></td>
-            }
-            else
-            {
-                 <td></td>
-            }
-            }
-        </tr>
+                <td>
+                    <b><a asp-controller="Home" asp-action="Complete" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Complete</a></b>
+                </td>
+                <td>
+                    <b><a asp-controller="Home" asp-action="Clear" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Clear</a></b>
+                </td>
+                <td>
+                    @if (todo.DeadLine.Date < DateTime.Now.Date && todo.DeadLine != default(DateTime))
+                    {
+                        <b>EXPIRED</b>
+                    }
+                </td>
+            </tr>
         }
         <tr>
-            <td><input type="text" name="What"></td>
-            <td><input type="text" name="DeadLine"></td>
-            <td><input type="submit" value="Add node"></td>
+            <td><input style="margin-left:0; margin-right:0" type="text" name="What" form="addForm"></td>
+            <td><input type="text" name="DeadLine" form="addForm"></td>
+            <td><input type="submit" value="Add node" form="addForm"></td>
+            <td></td>
             <td></td>
         </tr>
     </table>
-        </form>
+
+    <br /><br />
+    <h3>Completed Todo list for @ViewBag.UserName</h3>
+    <br /><br />
+
+    <table style="width:100%" , border="1">
+        <tr>
+            <th width="30%">What</th>
+            <th width="20%">Deadline</th>
+            <th width="20%">Actual date</th>
+            <th width="20%">Performance</th>
+            <th width="10%"></th>
+        </tr>
+        @foreach (Todo todo in Model.Value)
+        {
+            <tr>
+                <td>@todo.What</td>
+                @{
+                    if (todo.DeadLine == DateTime.Today)
+                    {
+                        <td>Today</td>
+                    }
+                    else if (todo.DeadLine == DateTime.Today.AddDays(1))
+                    {
+                        <td>Tomorrow</td>
+                    }
+                    else if (todo.DeadLine.AddDays(1) == DateTime.Today)
+                    {
+                        <td>Yesterday</td>
+                    }
+                    else if (todo.DeadLine == default(DateTime))
+                    {
+                        <td>Unknown</td>
+                    }
+                    else if (todo.DeadLine.Year == DateTime.Now.Year)
+                    {
+                        <td>@todo.DeadLine.ToString("MM/dd")</td>
+                    }
+                    else
+                    {
+                        <td>@todo.DeadLine.ToString("yyyy/MM/dd")</td>
+                    }
+
+                    if (todo.ActualDate.Date == DateTime.Today.Date)
+                    {
+                        <td>Today</td>
+                    }
+                    else if (todo.ActualDate.AddDays(1).Date == DateTime.Today.Date)
+                    {
+                        <td>Yesterday</td>
+                    }
+                    else if (todo.ActualDate.Year == DateTime.Now.Year)
+                    {
+                        <td>@todo.ActualDate.ToString("MM/dd")</td>
+                    }
+                    else
+                    {
+                        <td>@todo.ActualDate.ToString("yyyy/MM/dd")</td>
+                    }
+
+                    if (todo.DeadLine == default(DateTime))
+                    {
+                        <td>Unknown</td>
+                    }
+                    else if (todo.ActualDate.Date < todo.DeadLine.Date)
+                    {
+                        <td>GOOD</td>
+                    }
+                    else if (todo.ActualDate.Date > todo.DeadLine.Date)
+                    {
+                        <td>BAD</td>
+                    }
+                    else
+                    {
+                        <td>OK</td>
+                    }
+                }
+                <td>
+                    <b><a asp-controller="Home" asp-action="Clear" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Clear</a></b>
+                </td>
+            </tr>
+        }
+    </table>
+    <br /><br />
+    <form method="get" asp-controller="Home" asp-action="SignOut">
+        <input type="submit" value="Sign Out" />
+    </form>
+    <form method="get" asp-controller="Home" asp-action="Remove">
+        <input type="submit" value="Remove Account" />
+    </form>
 </body>
 </html>

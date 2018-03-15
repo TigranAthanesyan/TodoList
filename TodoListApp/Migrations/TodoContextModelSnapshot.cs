@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using TodoListApp.Models;
@@ -22,25 +21,27 @@ namespace TodoListApp.Migrations
 
             modelBuilder.Entity("TodoListApp.Models.Person", b =>
                 {
-                    b.Property<int>("PersonId")
+                    b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Password");
 
-                    b.HasKey("PersonId");
+                    b.HasKey("UserName");
 
                     b.ToTable("People");
                 });
 
             modelBuilder.Entity("TodoListApp.Models.Todo", b =>
                 {
-                    b.Property<int>("PersonId");
+                    b.Property<string>("UserName");
 
                     b.Property<string>("What");
 
+                    b.Property<DateTime>("ActualDate");
+
                     b.Property<DateTime>("DeadLine");
 
-                    b.HasKey("PersonId", "What");
+                    b.HasKey("UserName", "What");
 
                     b.ToTable("TodoList");
                 });

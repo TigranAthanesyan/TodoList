@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TodoListApp.Controllers;
 using TodoListApp.Models;
 
 namespace TodoListApp
@@ -41,11 +38,25 @@ namespace TodoListApp
 
             app.UseStaticFiles();
 
+            app.Use(async (context, next) =>
+            {
+                if (!context.Request.Cookies.ContainsKey(HomeController.CookyUserName) &&
+                    !HomeController.IsAllowableFunction(context.Request.Path.Value))
+                {
+                    string url = "http://" + context.Request.Host.Value + "/Home/" + nameof(HomeController.SignIn);
+                    context.Response.Redirect(url);
+                }
+                else
+                {
+                    await next.Invoke();
+                }
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=List}/{id?}");
             });
         }
     }

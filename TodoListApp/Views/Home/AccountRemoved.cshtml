@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Account Removed";
+}
+<html>
+<body>
+
+    <h2>Account with user name @ViewBag.UserName was successfully removed!!</h2>
+    <br /><br />
+
+    <form method="get" asp-controller="Home" asp-action="SignOut">
+        <input type="submit" value="OK" />
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<html>
+<body>
+
+    <form method="post" asp-controller="Home" asp-action="SignIn">
+        <table>
+            <tr>
+                <th></th>
+                <th><h3>Sign In</h3></th>
+            </tr>
+            <tr>
+                <td>User Name</td>
+                <td><input type="text" name="userName" value=@ViewBag.UserName /></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+    </form>
+
+    <br /><br />
+    @{foreach (var userName in Model)
+        {
+            <a asp-controller="Home" asp-action="SignIn" asp-route-userName=@userName><b>@userName</b></a><br />
+        }
+    }
+    <br /><br />
+    <a asp-controller="Home" asp-action="SignUp"><h3>Sign Up</h3></a>
+
+</body>
+</html>

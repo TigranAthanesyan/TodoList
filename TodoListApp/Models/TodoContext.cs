@@ -13,9 +13,9 @@ namespace TodoListApp.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Person>()
-                .HasKey(c => c.PersonId);
+                .HasKey(person => person.UserName);
             modelBuilder.Entity<Todo>()
-                .HasKey(c => new { c.PersonId, c.What });
+                .HasKey(todo => new { todo.UserName, todo.What });
         }
     }
 }

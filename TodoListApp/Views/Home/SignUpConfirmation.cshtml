@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Sign Up Confirmation";
+}
+<html>
+<body>
+
+    <h2>Thank you for registration!!</h2>
+    <br /><br />
+          <h4>
+              Account with user name @ViewBag.UserName was successfully created!!
+          </h4>
+    <br />
+    <form method="get" asp-controller="Home" asp-action="SignIn">
+        <input type="submit" value="OK" />
+    </form>
+
+</body>
+</html>
+

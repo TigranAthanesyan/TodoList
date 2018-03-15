@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace TodoListApp.Migrations
 {
-    public partial class InitTodo : Migration
+    public partial class Version_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,26 +12,26 @@ namespace TodoListApp.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    PersonId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_People", x => x.PersonId);
+                    table.PrimaryKey("PK_People", x => x.UserName);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TodoList",
                 columns: table => new
                 {
-                    PersonId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: false),
                     What = table.Column<string>(nullable: false),
+                    ActualDate = table.Column<DateTime>(nullable: false),
                     DeadLine = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TodoList", x => new { x.PersonId, x.What });
+                    table.PrimaryKey("PK_TodoList", x => new { x.UserName, x.What });
                 });
         }
 

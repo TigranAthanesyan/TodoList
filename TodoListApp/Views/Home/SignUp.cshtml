@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "SignUp";
+}
+
+<html>
+<body>
+
+    <form method="post" asp-controller="Home" asp-action="SignUp">
+        <table>
+            <tr>
+                <th></th>
+                <th><h2>Sign Up</h2></th>
+            </tr>
+            <tr>
+                <td>User Name</td>
+                <td><input type="text" name="userName" /></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td>Confirm Password</td>
+                <td><input type="password" name="passwordCopy" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                <input type="submit" value="Submit" />
+                <a asp-controller="Home" asp-action="SignIn">
+                    <input type="button" value="Exit" />
+                </a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
+
+
+
