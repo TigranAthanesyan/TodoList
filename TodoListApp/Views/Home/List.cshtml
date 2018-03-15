@@ -2,20 +2,27 @@
 @{
     ViewData["Title"] = "List";
 }
-
+<head>
+    <style>
+        td, th {
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
 <html>
 <body>
     <br /><br />
-    <h3>Todo list for @ViewBag.UserName</h3>
+    <h3 style="text-align: center">Todo list for @ViewBag.UserName</h3>
     <br /><br />
     <form method="post" asp-controller="Home" asp-action="Add" id="addForm"></form>
     <table style="width:100%" , border="1">
         <tr>
-            <th width="30%">What</th>
-            <th width="20%">Deadline</th>
-            <th width="20%"></th>
-            <th width="20%"></th>
-            <th width="10%"></th>
+            <th width="30%";>What</th>
+            <th width="20%";>Deadline</th>
+            <th width="20%";>Complete</th>
+            <th width="20%";>Delete</th>
+            <th width="10%";>Days left</th>
         </tr>
         @foreach (Todo todo in Model.Key)
         {
@@ -48,30 +55,44 @@
                     }
                 }
                 <td>
-                    <b><a asp-controller="Home" asp-action="Complete" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Complete</a></b>
+                    <b><a asp-controller="Home" asp-action="Complete" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Done</a></b>
                 </td>
                 <td>
                     <b><a asp-controller="Home" asp-action="Clear" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Clear</a></b>
                 </td>
                 <td>
-                    @if (todo.DeadLine.Date < DateTime.Now.Date && todo.DeadLine != default(DateTime))
+                    @if (todo.DeadLine != default(DateTime))
                     {
-                        <b>EXPIRED</b>
+                        if (todo.DeadLine.Date < DateTime.Now.Date)
+                        {
+                            <b>EXPIRED</b>
+                        }
+                        else
+                        {
+                            var dif = todo.DeadLine.Subtract(DateTime.Now.Date).Days;
+                            <b>@dif</b>
+                        }
                     }
+                    else
+                    {
+                        <b>---</b>
+
+                    }
+
                 </td>
             </tr>
         }
         <tr>
-            <td><input style="margin-left:0; margin-right:0" type="text" name="What" form="addForm"></td>
-            <td><input type="text" name="DeadLine" form="addForm"></td>
-            <td><input type="submit" value="Add node" form="addForm"></td>
+            <td><input style="padding: 0; width: 100%;" type="text" name="What" form="addForm"></td>
+            <td><input style="padding: 0; width: 100%;" type="text" name="DeadLine" form="addForm"></td>
+            <td><input style="padding: 0; width: 100%;" type="submit" value="Add node" form="addForm"></td>
             <td></td>
             <td></td>
         </tr>
     </table>
 
     <br /><br />
-    <h3>Completed Todo list for @ViewBag.UserName</h3>
+    <h3 style="text-align: center">Completed Todo list for @ViewBag.UserName</h3>
     <br /><br />
 
     <table style="width:100%" , border="1">
@@ -80,7 +101,7 @@
             <th width="20%">Deadline</th>
             <th width="20%">Actual date</th>
             <th width="20%">Performance</th>
-            <th width="10%"></th>
+            <th width="10%">Delete</th>
         </tr>
         @foreach (Todo todo in Model.Value)
         {
@@ -153,11 +174,9 @@
         }
     </table>
     <br /><br />
-    <form method="get" asp-controller="Home" asp-action="SignOut">
-        <input type="submit" value="Sign Out" />
-    </form>
-    <form method="get" asp-controller="Home" asp-action="Remove">
-        <input type="submit" value="Remove Account" />
-    </form>
+    <form method="get" asp-controller="Home" asp-action="SignOut" id="SignOutForm"></form>
+    <form method="get" asp-controller="Home" asp-action="Remove" id="RemoveForm"></form>
+    <input type="submit" value="Sign Out" form="SignOutForm" />
+    <input style="padding-left: 10px;" type="submit" value="Remove Account" form="RemoveForm" />
 </body>
 </html>
