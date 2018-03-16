@@ -7,6 +7,7 @@
         td, th {
             padding: 5px;
             text-align: center;
+            border: solid;
         }
     </style>
 </head>
@@ -16,13 +17,13 @@
     <h3 style="text-align: center">Todo list for @ViewBag.UserName</h3>
     <br /><br />
     <form method="post" asp-controller="Home" asp-action="Add" id="addForm"></form>
-    <table style="width:100%" , border="1">
+    <table style="width:100%">
         <tr>
-            <th width="30%";>What</th>
-            <th width="20%";>Deadline</th>
-            <th width="20%";>Complete</th>
-            <th width="20%";>Delete</th>
-            <th width="10%";>Days left</th>
+            <th width="30%" ;>What</th>
+            <th width="20%" ;>Deadline</th>
+            <th width="20%" ;>Complete</th>
+            <th width="15%" ;>Days left</th>
+            <th width="15%" ;>Delete</th>
         </tr>
         @foreach (Todo todo in Model.Key)
         {
@@ -58,14 +59,11 @@
                     <b><a asp-controller="Home" asp-action="Complete" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Done</a></b>
                 </td>
                 <td>
-                    <b><a asp-controller="Home" asp-action="Clear" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Clear</a></b>
-                </td>
-                <td>
                     @if (todo.DeadLine != default(DateTime))
                     {
                         if (todo.DeadLine.Date < DateTime.Now.Date)
                         {
-                            <b>EXPIRED</b>
+                            <b style="color: red">EXPIRED</b>
                         }
                         else
                         {
@@ -76,18 +74,19 @@
                     else
                     {
                         <b>---</b>
-
                     }
-
+                </td>
+                <td>
+                    <b><a asp-controller="Home" asp-action="Clear" asp-route-What="@todo.What" asp-route-UserName="@todo.UserName">Clear</a></b>
                 </td>
             </tr>
         }
         <tr>
-            <td><input style="padding: 0; width: 100%;" type="text" name="What" form="addForm"></td>
-            <td><input style="padding: 0; width: 100%;" type="text" name="DeadLine" form="addForm"></td>
-            <td><input style="padding: 0; width: 100%;" type="submit" value="Add node" form="addForm"></td>
-            <td></td>
-            <td></td>
+            <td style="border: 0;"><input style="padding: 4px; width: 100%;" type="text" name="What" form="addForm"></td>
+            <td style="border: 0;"><input style="padding: 4px; width: 100%;" type="text" name="DeadLine" form="addForm"></td>
+            <td style="border: 0;"><input style="padding: 4px; width: 100%;" type="submit" value="Add node" form="addForm"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
         </tr>
     </table>
 
@@ -95,28 +94,28 @@
     <h3 style="text-align: center">Completed Todo list for @ViewBag.UserName</h3>
     <br /><br />
 
-    <table style="width:100%" , border="1">
+    <table style="width:100%">
         <tr>
-            <th width="30%">What</th>
-            <th width="20%">Deadline</th>
-            <th width="20%">Actual date</th>
-            <th width="20%">Performance</th>
-            <th width="10%">Delete</th>
+            <th width="30%; ">What</th>
+            <th width="20%; ">Deadline</th>
+            <th width="20%; ">Actual date</th>
+            <th width="15%; ">Performance</th>
+            <th width="15%; ">Delete</th>
         </tr>
         @foreach (Todo todo in Model.Value)
         {
             <tr>
                 <td>@todo.What</td>
                 @{
-                    if (todo.DeadLine == DateTime.Today)
+                    if (todo.DeadLine.Date == DateTime.Today.Date)
                     {
                         <td>Today</td>
                     }
-                    else if (todo.DeadLine == DateTime.Today.AddDays(1))
+                    else if (todo.DeadLine.Date == DateTime.Today.AddDays(1).Date)
                     {
                         <td>Tomorrow</td>
                     }
-                    else if (todo.DeadLine.AddDays(1) == DateTime.Today)
+                    else if (todo.DeadLine.AddDays(1).Date == DateTime.Today.Date)
                     {
                         <td>Yesterday</td>
                     }
@@ -156,11 +155,11 @@
                     }
                     else if (todo.ActualDate.Date < todo.DeadLine.Date)
                     {
-                        <td>GOOD</td>
+                        <td>Good</td>
                     }
                     else if (todo.ActualDate.Date > todo.DeadLine.Date)
                     {
-                        <td>BAD</td>
+                        <td>Bad</td>
                     }
                     else
                     {
@@ -176,7 +175,7 @@
     <br /><br />
     <form method="get" asp-controller="Home" asp-action="SignOut" id="SignOutForm"></form>
     <form method="get" asp-controller="Home" asp-action="Remove" id="RemoveForm"></form>
-    <input type="submit" value="Sign Out" form="SignOutForm" />
-    <input style="padding-left: 10px;" type="submit" value="Remove Account" form="RemoveForm" />
+    <input style="width: 15%;" type="submit" value="Sign Out" form="SignOutForm" />
+    <input style="padding-left: 10px; width: 15%;" type="submit" value="Remove Account" form="RemoveForm" />
 </body>
 </html>
