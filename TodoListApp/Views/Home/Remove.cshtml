@@ -2,12 +2,23 @@
 @{
     ViewData["Title"] = "Remove";
 }
-
-<h4>Are you sure?</h4>
-
 <form method="get" asp-controller="Home" asp-action="AccountRemoved" id="RemoveForm"></form>
 <form method="get" asp-controller="Home" asp-action="List" id="DoNotRemoveForm"></form>
-<input type="submit" value="Yes" form="RemoveForm"/>
-<input type="submit" value="No" form="DoNotRemoveForm"/>
+
+<table style="width: 35%;">
+    <tr>
+        <th style="width: 100%; text-align:center;"><h2 style="text-align: center;">Are you sure?</h2></th>
+    </tr>
+    <tr>
+        <td>
+            <b><input style="width: 45%;" type="submit" value="Yes" form="RemoveForm" /></b>
+            <b><input style="width: 45%;" type="submit" value="No" form="DoNotRemoveForm" /></b>
+        </td>
+    </tr>
+</table>
+
+
+
+
 
 

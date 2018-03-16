@@ -6,31 +6,31 @@
 <body>
 
     <form method="post" asp-controller="Home" asp-action="SignUp">
-        <table>
+        <table style="width: 40%;">
             <tr>
                 <th></th>
-                <th><h2>Sign Up</h2></th>
+                <th><h1>Sign Up</h1></th>
             </tr>
             <tr>
-                <td>User Name</td>
-                <td><input type="text" name="userName" /></td>
+                <td style="text-align: end; padding-right: 10px;"><b>User Name</b></td>
+                <td><input style="padding: 5px; width: 100%;" type="text" name="userName" /></td>
             </tr>
             <tr>
-                <td>Password</td>
-                <td><input type="password" name="password" /></td>
+                <td style="text-align: end; padding-right: 10px;"><b>Password</b></td>
+                <td><input style="padding: 5px; width: 100%;" type="password" name="password" /></td>
             </tr>
             <tr>
-                <td>Confirm Password</td>
-                <td><input type="password" name="passwordCopy" /></td>
+                <td style="text-align: end; padding-right: 10px;"><b>Confirm Password</b></td>
+                <td><input style="padding: 5px; width: 100%;" type="password" name="passwordCopy" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td>
-                <input type="submit" value="Submit" />
+                <td><b>
+                <input style="padding: 5px; width: 49%;" type="submit" value="Submit" />
                 <a asp-controller="Home" asp-action="SignIn">
-                    <input type="button" value="Exit" />
+                    <input style="padding: 5px; width: 48%;" type="button" value="Exit" />
                 </a>
-                </td>
+                </b></td>
             </tr>
         </table>
     </form>

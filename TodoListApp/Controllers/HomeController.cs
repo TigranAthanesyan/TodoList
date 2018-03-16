@@ -87,9 +87,9 @@ namespace TodoListApp.Controllers
             }
             if (_dbContext.People.Any(p => p.UserName == userName))
             {
-                StringBuilder sb = new StringBuilder("Account creating failed!! Reason: User with User name ");
+                StringBuilder sb = new StringBuilder("Account creating failed!! Reason: User with User name \"");
                 sb.Append(userName);
-                sb.Append(" already exists..");
+                sb.Append("\" already exists..");
                 return RedirectToAction(nameof(this.Error), new { message = sb.ToString(), actionName = nameof(this.SignUp) });
             }
             if (string.IsNullOrEmpty(password))
@@ -297,7 +297,6 @@ namespace TodoListApp.Controllers
         {
             return View(new ErrorViewModel
             {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                 Message = message,
                 ActionName = actionName
             });

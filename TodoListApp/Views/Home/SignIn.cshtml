@@ -7,34 +7,45 @@
 <body>
 
     <form method="post" asp-controller="Home" asp-action="SignIn">
-        <table>
+        <table style="width: 40%;">
             <tr>
                 <th></th>
-                <th><h3>Sign In</h3></th>
+                <th><h1>Sign In</h1></th>
             </tr>
             <tr>
-                <td>User Name</td>
-                <td><input type="text" name="userName" value=@ViewBag.UserName /></td>
+                <td style="text-align: end; padding-right: 10px;"><b>User Name</b></td>
+                <td><input style="padding: 5px; width: 100%;" type="text" name="userName" value=@ViewBag.UserName /></td>
             </tr>
             <tr>
-                <td>Password</td>
-                <td><input type="password" name="password" /></td>
+                <td style="text-align: end; padding-right: 10px;"><b>Password</b></td>
+                <td><input style="padding: 5px; width: 100%;" type="password" name="password" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Submit" /></td>
+                <td><b><input style="padding: 5px; width: 50%;" type="submit" value="Submit" /></b></td>
+            </tr>
+            <tr><td><br /></td><td><br /></td></tr>
+            <tr><td><br /></td><td><br /></td></tr>
+            <tr><td><br /></td><td><br /></td></tr>
+
+             @{foreach (var userName in Model)
+              {
+                     <tr>
+                         <td></td><td>
+                             <a asp-controller="Home" asp-action="SignIn" asp-route-userName=@userName><b>@userName</b></a><br />
+                         </td>
+                     </tr>
+              }
+              }
+            <tr><td><br /></td><td><br /></td></tr>
+            <tr><td><br /></td><td><br /></td></tr>
+            <tr>
+                <td> </td><td>
+                    <a asp-controller="Home" asp-action="SignUp"><h1>Sign Up</h1></a>
+               </td>
             </tr>
         </table>
     </form>
-
-    <br /><br />
-    @{foreach (var userName in Model)
-        {
-            <a asp-controller="Home" asp-action="SignIn" asp-route-userName=@userName><b>@userName</b></a><br />
-        }
-    }
-    <br /><br />
-    <a asp-controller="Home" asp-action="SignUp"><h3>Sign Up</h3></a>
 
 </body>
 </html>

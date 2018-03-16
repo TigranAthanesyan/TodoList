@@ -17,9 +17,9 @@
 </head>
 <html>
 <body>
+    <h2 style="text-align: center">Welcome to your todo list @ViewBag.UserName!!</h2>
     <br /><br />
-    <h3 style="text-align: center">Todo list for @ViewBag.UserName</h3>
-    <br /><br />
+    <h3 style="text-align: center">To do</h3>
     <form method="post" asp-controller="Home" asp-action="Add" id="addForm"></form>
     <table style="width:100%">
         <tr>
@@ -94,9 +94,8 @@
         </tr>
     </table>
 
-    <br /><br />
-    <h3 style="text-align: center">Completed Todo list for @ViewBag.UserName</h3>
-    <br /><br />
+    <br />
+    <h3 style="text-align: center">Completed</h3>
 
     <table style="width:100%">
         <tr>
@@ -179,7 +178,7 @@
     <br /><br />
     <form method="get" asp-controller="Home" asp-action="SignOut" id="SignOutForm"></form>
     <form method="get" asp-controller="Home" asp-action="Remove" id="RemoveForm"></form>
-    <input style="width: 15%;" type="submit" value="Sign Out" form="SignOutForm" />
-    <input style="padding-left: 10px; width: 15%;" type="submit" value="Remove Account" form="RemoveForm" />
+    <b><input style="width: 15%;" type="submit" value="Sign Out" form="SignOutForm" /></b>
+    <b><input style="padding-left: 10px; width: 15%;" type="submit" value="Remove Account" form="RemoveForm" /></b>
 </body>
 </html>
